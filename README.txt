@@ -4,8 +4,9 @@ Computer code and simulated data of the study
 "Mapping Glacier Geomorphology by UAV data: A Case Study in Larsemann Hills, East Antarctica"
 -------------------------------------------------------------------------------
 This work was improved by Li Yibo from Sun Yat-sen University, 
-who modified the fitting formula and added an automatic fitting feature to the kriging toolset. 
-These enhancements were integrated to streamline the process of fitting variograms and improve the overall performance of the reconstruction method.
+who modified the fitting formula and added an automatic fitting 
+feature to the kriging toolset. These enhancements were integrated to streamline the process 
+of fitting variograms and improve the overall performance of the reconstruction method.
 
 This MATLAB code and data 
 associated with the numerical method put forward by the original authors, 
@@ -16,7 +17,6 @@ Reconstructing ice-flow fields from streamlined subglacial bedforms: a kriging a
 Earth Surface Processes and Landforms. doi: 10.1002/esp.4538.
 
 
-License for the data files: CC BY 4.0.
 License for the code: MIT open source license.
 
 

@@ -15,12 +15,6 @@ Ng, F.S.L. and Hughes, A.L.C.
 Reconstructing ice-flow fields from streamlined subglacial bedforms: a kriging approach. 
 Earth Surface Processes and Landforms. doi: 10.1002/esp.4538.
 
-The archive includes: 
-- MATLAB (.m) scripts of the kriging toolset described in Section 3 of the paper
-- MATLAB (.m) scripts of specific commands used in the Tweed-Valley Case Study (Section 4)
-	and MATLAB (.mat) files of the corresponding input data and computed output data.
-
-See "README.txt" and the paper for more information.
 
 License for the data files: CC BY 4.0.
 License for the code: MIT open source license.
@@ -131,13 +125,15 @@ trace_flowlines.m  	Starting from positions defined by mouse clicks, trace a flo
 
 krig_validation.m 	Perform cross-validation on the kriging of flow directions for a flowset.
 
-
+color_Exchange.m	This function converts RGB color values from the standard 0–255 range to the normalized 0–1 range.
+			It is useful for ensuring compatibility with color specifications in 
+			many plotting and visualization tools.
 
 ------------------------------------------------------------------------------------------
 (3) SPECIFIC COMMANDS AND INPUT/COMPUTED DATA OF THE TWEED-VALLEY CASE STUDY
 
 The following files were used to undertake the "full reconstruction" of the palaeo ice-flow 
-field using all direction data from Glacial lineations in the Flowset fs10
+field using all direction data from Glacial lineations in the Flowset 
 --- To re-run this example, place the file "flowset.mat" 
 in the home folder and run "process.m".
 
@@ -157,7 +153,7 @@ process.m		A complete list of commands (including calls to the following three f
 
 compile_variogram_example.m 	
 			Commands using "find_vg.m" to compile the Experimental Variogram data for
-			Flowset fs10. The example does this at two resolutions:
+			Flowset . The example does this at two resolutions:
 					(i) dh = 50, hmax = 800
 					(ii) dh = 100, hmax = 2000
 			in order to (i) resolve the detailed profile of the variogram near the origin
@@ -165,13 +161,13 @@ compile_variogram_example.m
 
 Model_Autofit.m
 			This script is used to automatically fit the variogram model (as described in Equations (5) and (6)) 
-            to the experimental variogram of Flowset The program first prompts the user to 
-            input rough initial estimates for the parameters C0 to C5. Then, using a least-squares algorithm, 
-            it optimizes these parameters to best fit the experimental variogram data. 
-            The script plots both the model curve and the experimental variogram, 
-            allowing the user to visually assess the quality of the fit. 
-            The automatic fitting process ensures that the variogram model parameters 
-            are determined more precisely through iterative optimization.
+            		to the experimental variogram of Flowset The program first prompts the user to 
+         		input rough initial estimates for the parameters C0 to C5. Then, using a least-squares algorithm, 
+            		it optimizes these parameters to best fit the experimental variogram data. 
+            		The script plots both the model curve and the experimental variogram, 
+            		allowing the user to visually assess the quality of the fit. 
+            		The automatic fitting process ensures that the variogram model parameters 
+            		are determined more precisely through iterative optimization.
  
 krig_fs_example.m	Kriging of Flowset fs, using the input data matrix F1 in "flowset.mat",
 			the kriging range R = 2000 m and the model variogram in "vg_mod.m" (after its

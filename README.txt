@@ -130,7 +130,7 @@ color_Exchange.m	This function converts RGB color values from the standard 0–2
 			many plotting and visualization tools.
 
 ------------------------------------------------------------------------------------------
-(3) SPECIFIC COMMANDS AND INPUT/COMPUTED DATA OF THE TWEED-VALLEY CASE STUDY
+(3) SPECIFIC COMMANDS AND INPUT/COMPUTED DATA OF THE LARSEMANN HILLS CASE STUDY
 
 The following files were used to undertake the "full reconstruction" of the palaeo ice-flow 
 field using all direction data from Glacial lineations in the Flowset 

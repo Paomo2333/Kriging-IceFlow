@@ -1,7 +1,7 @@
 
 -------------------------------------------------------------------------------
 Computer code and simulated data of the study
-"Mapping Glacier Geomorphology by UAV data: A Case Study in Larsemann Hills, East Antarctica"
+"Mapping the Paleo Ice-Flow in Larsemann Hills, East Antarctica by UAV Remote Sensing and Terrain Analysis"
 -------------------------------------------------------------------------------
 This work was improved by Li Yibo from Sun Yat-sen University, 
 who modified the fitting formula and added an automatic fitting 

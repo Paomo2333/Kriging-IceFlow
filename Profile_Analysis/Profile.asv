@@ -1,0 +1,112 @@
+%% analyze_valley_profile.m
+% Description:
+% This script analyzes U-shaped valley cross-section profiles using UAV-derived
+% distance-elevation data in East Antarctica (Larsemann Hills). It identifies
+% slope features, computes average gradients and distances, and plots the
+% results. Designed for research purposes.
+
+% Author: Li Yibo
+% Email: liyb76@mail2.sysu.edu.cn
+% Institution: Sun Yat-sen University
+% Date: 2025-04-16
+
+%% Initialization
+clc; clear;
+
+% Number of input profiles
+n = 6;
+Line = cell(1, n);
+
+% Read profile data from CSV files
+for i = 1:n
+    filename = sprintf('Ushape%d.csv', i);
+    Line{i} = readtable(filename);
+end
+
+%% Set up figure and path
+path = 'E:\software_process\matlab_process\研一\论文相关\剧面线分析_U型谷';
+figure('Units','centimeters','Position',[48.5, -5, 43.9, 26.5])
+subplot(3, 2, [1, 2]);
+
+%% Plotting the first profile (can be looped later)
+col1 = colorExchange(255, 0, 30); % Convert RGB to MATLAB format
+Lines = Line{1};
+Elevation = table2array(Lines(:,3));
+Distance = table2array(Lines(:,2));
+
+% Fill area under profile curve
+x_fill = [Distance; flip(Distance)];
+y_fill = [Elevation; zeros(size(Elevation))];
+
+% Plot main profile line
+plot(Distance, Elevation, 'k', 'LineWidth', 0.5); hold on;
+ylims = ylim;
+fill(x_fill, y_fill, col1, 'FaceAlpha', 0.6);
+
+% Mark ridge lines (manual values corresponding to peak positions)
+plot([211.274, 211.274], ylims, 'b--', 'LineWidth', 1.5);
+plot([563.834, 563.834], ylims, 'b--', 'LineWidth', 1.5);
+plot([754.177, 754.177], ylims, 'b--', 'LineWidth', 1.5);
+
+%% Identify minimum slope near peaks
+% First peak
+peak1_pos = 211.2741;
+range1 = Distance >= (peak1_pos - 30) & Distance <= (peak1_pos + 30);
+slope1 = diff(Elevation(range1)) ./ diff(Distance(range1));
+[~, idx1] = min(abs(slope1));
+min_slope1_xy = [Distance(find(range1, 1) + idx1 - 1), Elevation(find(range1, 1) + idx1 - 1)];
+fprintf('Coordinate of low-slope point near Peak 1: (%.3f, %.3f)\n', min_slope1_xy);
+
+% Second peak
+peak2_pos = 754.177;
+range2 = Distance >= (peak2_pos - 30) & Distance <= (peak2_pos + 30);
+slope2 = diff(Elevation(range2)) ./ diff(Distance(range2));
+[~, idx2] = min(abs(slope2));
+min_slope2_xy = [Distance(find(range2, 1) + idx2 - 1), Elevation(find(range2, 1) + idx2 - 1)];
+fprintf('Coordinate of low-slope point near Peak 2: (%.3f, %.3f)\n', min_slope2_xy);
+
+%% Find 4 points at the same elevation as min_slope1_xy(2) between the peaks
+baseline_elev = min_slope1_xy(2);
+mid_range = Distance >= min_slope1_xy(1) & Distance <= 602;
+elevs = Elevation(mid_range);
+dists = Distance(mid_range);
+[~, idxs] = mink(abs(elevs - baseline_elev), 4);
+xy_closest = [dists(idxs), elevs(idxs)];
+
+% Estimate the valley floor point between the middle two points
+v_idx = Distance >= xy_closest(2,1) & Distance <= xy_closest(4,1);
+[valley_elev, vmin_idx] = min(Elevation(v_idx));
+valley_min_xy = [Distance(find(v_idx, 1) + vmin_idx - 1), valley_elev];
+
+%% Calculate slopes and distances
+
+% Define points
+point1 = [xy_closest(1,1), baseline_elev];
+point2 = [xy_closest(2,1), baseline_elev];
+point3 = [xy_closest(4,1), baseline_elev];
+point4 = [xy_closest(3,1), baseline_elev];
+
+% Peak 1
+peak1 = [peak1_pos, Elevation(324)];
+slope_1a = atan2((peak1(2) - point1(2)), (peak1(1) - point1(1))) * (180/pi);
+slope_1b = atan2((peak1(2) - point2(2)), (point2(1) - peak1(1))) * (180/pi);
+dist_12 = abs(point2(1) - point1(1));
+fprintf('Average slope from point1 to Peak 1: %.3f°\n', slope_1a);
+fprintf('Average slope from Peak 1 to point2: %.3f°\n', slope_1b);
+fprintf('Distance between point1 and point2: %.3f\n', dist_12);
+
+% Valley floor
+dist_23 = abs(point3(1) - point2(1));
+slope_2v = atan2(abs(valley_min_xy(2) - point2(2)), abs(valley_min_xy(1) - point2(1))) * (180/pi);
+slope_v3 = atan2(abs(point3(2) - valley_min_xy(2)), abs(point3(1) - valley_min_xy(1))) * (180/pi);
+fprintf('Distance between point2 and point3: %.3f\n', dist_23);
+fprintf('Average slope from point2 to valley floor: %.3f°\n', slope_2v);
+fprintf('Average slope from valley floor to point3: %.3f°\n', slope_v3);
+
+% Peak 2
+peak2 = [Distance(863), Elevation(863)];
+slope_3a = atan2((peak2(2) - point3(2)), (peak2(1) - point3(1))) * (180/pi);
+slope_3b = atan2(abs(point4(2) - peak2(2)), abs(point4(1) - peak2(1))) * (180/pi);
+fprintf('Average slope from point3 to Peak 2: %.3f°\n', slope_3a);
+fprintf('Average slope from Peak 2 to point4: %.3f°\n', slope_3b);
+
